@@ -112,6 +112,7 @@ public class KidsActivity extends AppCompatActivity implements StudentRecyclerVi
 //                if(response.body().size() > 0) {
                     for (Student student1 : response.body()) {
 
+
                         Pic pic = student1.getPic();
                         Data data = pic.getData();
 

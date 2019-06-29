@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.parentportal.Utils.RequestController;
@@ -30,6 +34,8 @@ public class ProgramActivity extends AppCompatActivity implements ProgramRecycle
     private RetrofitCalls retrofitCalls;
 
     private ArrayList<Program> programs;
+
+    private String teacherId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,5 +84,38 @@ public class ProgramActivity extends AppCompatActivity implements ProgramRecycle
     @Override
     public void click(Program program, int position) {
         Toast.makeText(this, "Touched", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void imageClicked(Program program, ImageView imageView) {
+        teacherId = program.getTeacherId();
+        Intent intent = new Intent(this, TeacherInfoActivity.class);
+        intent.putExtra("teacherId", teacherId);
+        startActivity(intent);
+//        PopupMenu popupMenu = new PopupMenu(ProgramActivity.this, imageView);
+//        MenuInflater menuInflater = popupMenu.getMenuInflater();
+//        menuInflater.inflate(R.menu.teacher_menu, popupMenu.getMenu());
+//        popupMenu.show();
+
+//
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+
+            case R.id.item_teacher_menu_account:
+
+                Intent intent = new Intent(this, TeacherInfoActivity.class);
+                intent.putExtra("teacherId", teacherId);
+                startActivity(intent);
+                return true;
+            case R.id.item_teacher_menu_chat:
+
+                Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
+                return true;
+
+        }
+        return true;
     }
 }

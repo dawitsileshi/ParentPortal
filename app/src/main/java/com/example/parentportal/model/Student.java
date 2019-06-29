@@ -358,6 +358,28 @@ public class Student implements Parcelable {
 
     }
 
+    public String[] studentIds() {
+
+        Cursor cursor = dataSource.getAllKids();
+
+        cursor.moveToFirst();
+
+        String[] studentIds = new String[cursor.getCount()];
+//        ArrayList<String> studentIds = new ArrayList<>();
+
+        int index = 0;
+        while(!cursor.isAfterLast()) {
+
+            String id = cursor.getString(cursor.getColumnIndex(TableItems.KID_ID));
+            studentIds[index] = id;
+            index++;
+            cursor.moveToNext();
+        }
+
+        return studentIds;
+
+    }
+
     @Override
     public int describeContents() {
         return 0;

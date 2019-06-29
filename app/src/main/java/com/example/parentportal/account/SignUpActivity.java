@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.parentportal.KidsActivity;
 import com.example.parentportal.R;
 import com.example.parentportal.RetrofitCalls;
+import com.example.parentportal.Utils.PreferenceUtil;
 import com.example.parentportal.Utils.RequestController;
 import com.example.parentportal.model.DB.DataSource;
 import com.example.parentportal.model.Parent;
@@ -56,12 +57,15 @@ public class SignUpActivity extends AppCompatActivity {
     private DataSource dataSource;
     ArrayList<String> tokens;
 
+    private PreferenceUtil preferenceUtil;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
         tokens = new ArrayList<>();
+        preferenceUtil = new PreferenceUtil(this);
 
         et_activity_signup_fname = findViewById(R.id.et_activity_signup_fname);
         et_activity_signup_lname = findViewById(R.id.et_activity_signup_lname);
@@ -108,6 +112,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 tokens.clear();
+                Toast.makeText(SignUpActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 final String fname = et_activity_signup_fname.getText().toString().trim();
                 final String lname = et_activity_signup_lname.getText().toString().trim();
                 final String email = et_activity_signup_email.getText().toString().trim();

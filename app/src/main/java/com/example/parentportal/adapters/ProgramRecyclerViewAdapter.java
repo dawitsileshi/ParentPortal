@@ -2,11 +2,13 @@ package com.example.parentportal.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.parentportal.R;
@@ -22,6 +24,7 @@ public class ProgramRecyclerViewAdapter extends RecyclerView.Adapter<ProgramRecy
 
     public interface ClickLongClick{
         void click(Program program, int position);
+        void imageClicked(Program program, ImageView imageView);
     }
 
     public ProgramRecyclerViewAdapter(Context context, ArrayList<Program> programs, ClickLongClick clickLongClick) {
@@ -59,19 +62,35 @@ public class ProgramRecyclerViewAdapter extends RecyclerView.Adapter<ProgramRecy
                 tv_item_program_courseName,
                 tv_item_program_teacherName;
 
+        private ImageView iv_item_program_more;
+
+        private CardView cv_item_program_container;
+
         public ProgramViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tv_item_program_period = itemView.findViewById(R.id.tv_item_program_period);
             tv_item_program_courseName = itemView.findViewById(R.id.tv_item_program_courseName);
             tv_item_program_teacherName = itemView.findViewById(R.id.tv_item_program_teacherName);
+            iv_item_program_more = itemView.findViewById(R.id.iv_item_program_more);
+            cv_item_program_container = itemView.findViewById(R.id.cv_item_program);
 
-            itemView.setOnClickListener(this);
+            cv_item_program_container.setOnClickListener(this);
+            iv_item_program_more.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View v) {
-            clickLongClick.click(programs.get(getAdapterPosition()), getAdapterPosition());
+            if(v == cv_item_program_container) {
+
+                clickLongClick.click(programs.get(getAdapterPosition()), getAdapterPosition());
+
+            } else {
+
+                clickLongClick.imageClicked(programs.get(getAdapterPosition()), iv_item_program_more);
+
+            }
         }
     }
 }

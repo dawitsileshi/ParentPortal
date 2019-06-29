@@ -2,6 +2,7 @@ package com.example.parentportal;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -11,15 +12,29 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.parentportal.Utils.PreferenceUtil;
+import com.example.parentportal.Utils.RequestController;
 import com.example.parentportal.account.LoginActivity;
 import com.example.parentportal.model.Attendance;
 import com.example.parentportal.model.Discipline;
 import com.example.parentportal.model.Schedule;
 import com.example.parentportal.model.Schedules;
+import com.example.parentportal.model.Student;
 
-public class HomeActivity extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+public class HomeActivity extends AppCompatActivity implements AddParentBottomSheet.SubmitClicked {
 
     private Intent intent;
+
+    private Retrofit retrofit;
+    private RetrofitCalls retrofitCalls;
+
+    private Student student;
+
+    private AddParentBottomSheet addParentBottomSheet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +43,11 @@ public class HomeActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        student = new Student(this);
+        retrofit = RequestController.getRetrofit();
+        retrofitCalls = retrofit.create(RetrofitCalls.class);
+
         final Parcelable[] schedules = intent.getParcelableArrayExtra("schedules");
-
-
 
         Toast.makeText(this, String.valueOf(schedules.length), Toast.LENGTH_SHORT).show();
 
@@ -44,6 +61,7 @@ public class HomeActivity extends AppCompatActivity {
 //                }
                 Intent intent1 = new Intent(HomeActivity.this, ScheduleActivity.class);
                 intent1.putExtra("schedules", schedules);
+                Toast.makeText(HomeActivity.this, String.valueOf(schedules.length), Toast.LENGTH_SHORT).show();
                 startActivity(intent1);
 //                startActivity(ScheduleActivity.class);
             }
@@ -108,8 +126,41 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
 
+        } else {
+
+            addParentBottomSheet = new AddParentBottomSheet();
+            addParentBottomSheet.show(getSupportFragmentManager(), "add_parent");
+
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void clicked(String email, String tel) {
+
+        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
+        String[] studentIds = student.studentIds();
+        Call<String> addParent = retrofitCalls.addParent(email, tel, studentIds);
+
+        addParent.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                if(!response.isSuccessful()) {
+                    Toast.makeText(HomeActivity.this, "The server returned a status code of" + response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                addParentBottomSheet.dismiss();
+
+                Toast.makeText(HomeActivity.this, response.body(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                Toast.makeText(HomeActivity.this, "The error " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

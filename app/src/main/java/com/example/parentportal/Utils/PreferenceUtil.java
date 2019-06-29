@@ -10,6 +10,7 @@ public class PreferenceUtil {
     private final String PREFERENCE_NAME = "login_status";
     public static final String PREFERENCE_LOGGEDIN = "logged_in";
     public static final String PREFERENCE_SELECTED_STUDENTID = "selected_student_id";
+    public static final String PREFERENCE_TOKEN = "token";
 //    public final String PREFERENCE_NIGHTMODE_STATE = "NightModeState";
 //    public final String PREFERENCE_NOTIFICATION_STATE = "NotificationState";
 //    public final String PREFERENCE_FLOATINGWIDGET_STATE = "FloatingWidgetState";

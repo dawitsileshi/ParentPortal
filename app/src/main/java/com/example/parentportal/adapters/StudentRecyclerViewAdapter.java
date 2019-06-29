@@ -57,8 +57,8 @@ public class StudentRecyclerViewAdapter extends RecyclerView.Adapter<StudentRecy
         Student student = students.get(i);
         String fullName = student.getFname() + " " + student.getLname();
         viewHolder.tv_item_kid.setText(fullName);
-        Pic pic = student.getPic();
-        Data data = pic.getData();
+//        Pic pic = student.getPic();
+//        Data data = pic.getData();
 //        Drawable d = Drawable.createFromStream(new ByteArrayInputStream(data.getData()), null);
 
 //        for (int j = 0; j < data.getData().length; j++) {

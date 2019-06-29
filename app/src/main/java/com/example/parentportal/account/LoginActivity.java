@@ -27,7 +27,8 @@ import retrofit2.Retrofit;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText et_activity_login_email, et_activity_login_password;
-    private Button button_activity_login_login;
+    private Button button_activity_login_login,
+            button_activity_login_createAccount;
 
     private Retrofit retrofit;
     private RetrofitCalls retrofitCalls;
@@ -56,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 //        }
 
         button_activity_login_login = findViewById(R.id.button_activity_login_login);
+        button_activity_login_createAccount = findViewById(R.id.button_activity_login_create_account);
 
         ids = new ArrayList<>();
 
@@ -71,6 +73,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        button_activity_login_createAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+            }
+        });
     }
 
     private void checkDataFilled(String email, String password) {

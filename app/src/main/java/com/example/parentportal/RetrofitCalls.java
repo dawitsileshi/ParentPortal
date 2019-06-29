@@ -2,6 +2,7 @@ package com.example.parentportal;
 
 import com.example.parentportal.model.Attendance;
 import com.example.parentportal.model.Discipline;
+import com.example.parentportal.model.Event;
 import com.example.parentportal.model.FamilyContact;
 import com.example.parentportal.model.Grade;
 import com.example.parentportal.model.MedicalRecord;
@@ -81,4 +82,10 @@ public interface RetrofitCalls {
                                 @Field("password") String password,
                                 @Field("tokens") ArrayList<String> token);
 
+    @GET("events")
+    Call<ArrayList<Event>> listEvents();
+
+    @FormUrlEncoded
+    @POST("newparent")
+    Call<String> addParent(@Field("email") String email, @Field("tel") String tel, @Field("studentIds") String[] studentIds);
 }
